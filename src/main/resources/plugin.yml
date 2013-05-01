@@ -1,0 +1,10 @@
+name: UltraHardCoreGame
+main: ch.minepvp.bukkit.ultrahardcoregame.UltraHardCoreGame
+version: 0.7
+load: STARTUP
+softdepend: [VanishNoPacket]
+commands:
+  team:
+    description: Team Command
+  game:
+    description: Game Command
