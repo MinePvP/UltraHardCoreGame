@@ -47,7 +47,7 @@ public class UpdateScoreboardTask extends BukkitRunnable {
                 for ( Player player : team.getMembers() ) {
 
                     Score score = objective.getScore(player);
-                    score.setScore( player.getHealth() );
+                    score.setScore( new Double( player.getHealth() ).intValue() );
                 }
 
             }

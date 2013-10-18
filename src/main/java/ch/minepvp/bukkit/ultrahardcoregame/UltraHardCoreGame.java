@@ -52,11 +52,6 @@ public class UltraHardCoreGame extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        if ( !getServer().getOnlineMode() ) {
-            getLogger().info("Set Online Mode to true!");
-            return;
-        }
-
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
