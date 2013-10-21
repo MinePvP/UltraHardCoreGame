@@ -103,11 +103,14 @@ public class UltraHardCoreGame extends JavaPlugin {
         getConfig().addDefault("Settings.NoobProtection.Active", true);
         getConfig().addDefault("Settings.NoobProtection.Time", 20);
 
+        // Regain
+        getConfig().addDefault("Settings.Regain.OverNormalFood", false);
+
         // Apple
-        getConfig().addDefault("Settings.GoldenApple.WithIngots", true);
+        getConfig().addDefault("Settings.Regain.GoldenApple.WithIngots", true);
 
         // Melon
-        getConfig().addDefault("Settings.SpeckledMelon.WithBlock", true);
+        getConfig().addDefault("Settings.Regain.SpeckledMelon.WithBlock", true);
 
         // Auto Sneak
         getConfig().addDefault("Settings.Sneak.Auto", true);
@@ -199,7 +202,7 @@ public class UltraHardCoreGame extends JavaPlugin {
             Recipe recipe = recipes.next();
             ItemStack result = recipe.getResult();
 
-            if ( getConfig().getBoolean("Settings.GoldenApple.WithIngots") ) {
+            if ( getConfig().getBoolean("Settings.Regain.GoldenApple.WithIngots") ) {
 
                 if ( result.getTypeId() == Material.GOLDEN_APPLE.getId() ) {
                     recipes.remove();
@@ -207,7 +210,7 @@ public class UltraHardCoreGame extends JavaPlugin {
 
             }
 
-            if ( getConfig().getBoolean("Settings.SpeckledMelon.WithIngots") ) {
+            if ( getConfig().getBoolean("Settings.Regain.SpeckledMelon.WithIngots") ) {
 
                 if ( result.getTypeId() == Material.SPECKLED_MELON.getId() ) {
                     recipes.remove();
@@ -218,7 +221,7 @@ public class UltraHardCoreGame extends JavaPlugin {
         }
 
         // Add new Recipes
-        if ( getConfig().getBoolean("Settings.GoldenApple.WithIngots") ) {
+        if ( getConfig().getBoolean("Settings.Regain.GoldenApple.WithIngots") ) {
 
             // Add Golden Apple with Ingot
             ShapedRecipe recipe = new ShapedRecipe(new ItemStack( Material.GOLDEN_APPLE, 1))
@@ -229,7 +232,7 @@ public class UltraHardCoreGame extends JavaPlugin {
 
         }
 
-        if ( getConfig().getBoolean("Settings.SpeckledMelon.WithBlock") ) {
+        if ( getConfig().getBoolean("Settings.Regain.SpeckledMelon.WithBlock") ) {
 
             // Add Glistering Melon with Block
             ShapelessRecipe recipe = new ShapelessRecipe(new ItemStack( Material.SPECKLED_MELON, 1))
@@ -275,6 +278,33 @@ public class UltraHardCoreGame extends JavaPlugin {
 
                         getServer().broadcastMessage(ChatColor.GOLD + "The game Starts" + noob + "!");
 
+                    }
+                });
+
+        game.addSub("restart", "uhcg.game.restart")
+                .setDescription("Restart the Game")
+                .setHandler( new SubHandler() {
+                    @Override
+                    public void handle(CallInfo callInfo) throws MondoFailure {
+
+                        setActive(true);
+
+                        // Create Teams when a Player don't have one
+                        for ( Player player : getServer().getOnlinePlayers() ) {
+
+                            if ( getTeamByPlayer( player ) == null ) {
+                                Team team = new Team();
+                                team.addMember(player);
+
+                                addTeam(team);
+                            }
+
+                        }
+
+                        // Scoreboard
+                        new UpdateScoreboardTask();
+
+                        getServer().broadcastMessage(ChatColor.GOLD + "The game Starts again!");
                     }
                 });
 

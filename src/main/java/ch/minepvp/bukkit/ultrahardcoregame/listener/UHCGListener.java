@@ -226,6 +226,10 @@ public class UHCGListener implements Listener {
 
         if ( event.getEntity() instanceof Player) {
 
+            if ( plugin.getConfig().getBoolean("Settings.Regain.OverNormalFood") ) {
+                return;
+            }
+
             if ( plugin.isActive() && (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.REGEN ||
                     event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) ) {
 
