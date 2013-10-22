@@ -226,7 +226,7 @@ public class UHCGListener implements Listener {
 
         if ( event.getEntity() instanceof Player) {
 
-            if ( plugin.getConfig().getBoolean("Settings.Regain.OverNormalFood") ) {
+            if ( plugin.getConfig().getBoolean("Settings.Regain.Normal") ) {
                 return;
             }
 

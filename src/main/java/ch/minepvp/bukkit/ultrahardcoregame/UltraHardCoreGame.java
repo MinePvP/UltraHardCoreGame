@@ -104,13 +104,10 @@ public class UltraHardCoreGame extends JavaPlugin {
         getConfig().addDefault("Settings.NoobProtection.Time", 20);
 
         // Regain
-        getConfig().addDefault("Settings.Regain.OverNormalFood", false);
-
-        // Apple
-        getConfig().addDefault("Settings.Regain.GoldenApple.WithIngots", true);
+        getConfig().addDefault("Settings.Regain.Normal", false);
 
         // Melon
-        getConfig().addDefault("Settings.Regain.SpeckledMelon.WithBlock", true);
+        getConfig().addDefault("Settings.Regain.SpeckledMelon.WithIngots", true);
 
         // Auto Sneak
         getConfig().addDefault("Settings.Sneak.Auto", true);
@@ -202,14 +199,6 @@ public class UltraHardCoreGame extends JavaPlugin {
             Recipe recipe = recipes.next();
             ItemStack result = recipe.getResult();
 
-            if ( getConfig().getBoolean("Settings.Regain.GoldenApple.WithIngots") ) {
-
-                if ( result.getTypeId() == Material.GOLDEN_APPLE.getId() ) {
-                    recipes.remove();
-                }
-
-            }
-
             if ( getConfig().getBoolean("Settings.Regain.SpeckledMelon.WithIngots") ) {
 
                 if ( result.getTypeId() == Material.SPECKLED_MELON.getId() ) {
@@ -221,17 +210,6 @@ public class UltraHardCoreGame extends JavaPlugin {
         }
 
         // Add new Recipes
-        if ( getConfig().getBoolean("Settings.Regain.GoldenApple.WithIngots") ) {
-
-            // Add Golden Apple with Ingot
-            ShapedRecipe recipe = new ShapedRecipe(new ItemStack( Material.GOLDEN_APPLE, 1))
-                    .shape(new String[] { "III", "IAI", "III" })
-                    .setIngredient('I', Material.GOLD_INGOT).setIngredient('A', Material.APPLE);
-
-            getServer().addRecipe(recipe);
-
-        }
-
         if ( getConfig().getBoolean("Settings.Regain.SpeckledMelon.WithBlock") ) {
 
             // Add Glistering Melon with Block
