@@ -8,12 +8,12 @@ import mondocommand.CallInfo;
 import mondocommand.MondoCommand;
 import mondocommand.MondoFailure;
 import mondocommand.SubHandler;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 
 public class UltraHardCoreGame extends JavaPlugin {
@@ -444,6 +445,49 @@ public class UltraHardCoreGame extends JavaPlugin {
                     }
                 });
 
+        team.addSub("random", "uhcg.team.random")
+                .setDescription("Make random Teams")
+                .setUsage("<groupcount>")
+                .setMinArgs(1)
+                .setHandler( new SubHandler() {
+                    @Override
+                    public void handle(CallInfo callInfo) throws MondoFailure {
+
+                        if ( isActive() ) {
+                            callInfo.reply("{RED}You can't do this while the Game is running!");
+                            return;
+                        }
+
+                        Player[] players = getServer().getOnlinePlayers();
+
+                        if ( players.length > 3 ) {
+                            callInfo.reply("{RED}There need at least 4 Players online to use this Command!");
+                            return;
+                        }
+
+                        for ( int i = 0; i > callInfo.getIntArg(0); i++ ) {
+
+                            int teamSize = getServer().getOnlinePlayers().length / callInfo.getIntArg(0);
+
+                            Team team = new Team();
+
+                            for (int j = 0; j > teamSize; j++) {
+
+                                Player player = getRandomPlayerFromArray(players);
+                                players = (Player[]) ArrayUtils.removeElement(players, player);
+
+                                team.addMember(player);
+
+                            }
+
+                            team.sendMessage("{GREEN}Your are now in a Team with " + team.getMemberNames().toString());
+                            teams.add(team);
+                        }
+
+                        callInfo.reply("{GOLD}The Tams was created!");
+                    }
+                });
+
     }
 
     public void resetServer() {
@@ -575,6 +619,10 @@ public class UltraHardCoreGame extends JavaPlugin {
         }
 
         return false;
+    }
+
+    public Player getRandomPlayerFromArray(Player[] players) {
+        return players[new Random().nextInt(players.length)];
     }
 
 }

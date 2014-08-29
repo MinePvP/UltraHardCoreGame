@@ -1,6 +1,6 @@
 name: UltraHardCoreGame
 main: ch.minepvp.bukkit.ultrahardcoregame.UltraHardCoreGame
-version: 0.7.1
+version: 0.7.2
 load: STARTUP
 commands:
   team:

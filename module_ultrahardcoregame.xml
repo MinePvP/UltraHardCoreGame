@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_ultrahardcoregame" default="compile.module.ultrahardcoregame">
+  <dirname property="module.ultrahardcoregame.basedir" file="${ant.file.module_ultrahardcoregame}"/>
+  
+  <property name="module.jdk.home.ultrahardcoregame" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.ultrahardcoregame" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.ultrahardcoregame" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.ultrahardcoregame" value="${compiler.args}"/>
+  
+  <property name="ultrahardcoregame.output.dir" value="${module.ultrahardcoregame.basedir}/target/classes"/>
+  <property name="ultrahardcoregame.testoutput.dir" value="${module.ultrahardcoregame.basedir}/target/test-classes"/>
+  
+  <path id="ultrahardcoregame.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="ultrahardcoregame.module.production.classpath">
+    <path refid="${module.jdk.classpath.ultrahardcoregame}"/>
+    <path refid="library.maven:_org.bukkit:bukkit:1.6.4-r0.1-snapshot.classpath"/>
+    <path refid="library.maven:_us.crast:mondocommand:0.3.classpath"/>
+    <path refid="library.maven:_org.mcstats.bukkit:metrics:r6.classpath"/>
+  </path>
+  
+  <path id="ultrahardcoregame.runtime.production.module.classpath">
+    <pathelement location="${ultrahardcoregame.output.dir}"/>
+    <path refid="library.maven:_us.crast:mondocommand:0.3.classpath"/>
+    <path refid="library.maven:_org.mcstats.bukkit:metrics:r6.classpath"/>
+  </path>
+  
+  <path id="ultrahardcoregame.module.classpath">
+    <path refid="${module.jdk.classpath.ultrahardcoregame}"/>
+    <pathelement location="${ultrahardcoregame.output.dir}"/>
+    <path refid="library.maven:_junit:junit:3.8.1.classpath"/>
+    <path refid="library.maven:_org.bukkit:bukkit:1.6.4-r0.1-snapshot.classpath"/>
+    <path refid="library.maven:_us.crast:mondocommand:0.3.classpath"/>
+    <path refid="library.maven:_org.mcstats.bukkit:metrics:r6.classpath"/>
+  </path>
+  
+  <path id="ultrahardcoregame.runtime.module.classpath">
+    <pathelement location="${ultrahardcoregame.testoutput.dir}"/>
+    <pathelement location="${ultrahardcoregame.output.dir}"/>
+    <path refid="library.maven:_junit:junit:3.8.1.classpath"/>
+    <path refid="library.maven:_org.bukkit:bukkit:1.6.4-r0.1-snapshot.classpath"/>
+    <path refid="library.maven:_us.crast:mondocommand:0.3.classpath"/>
+    <path refid="library.maven:_org.mcstats.bukkit:metrics:r6.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.ultrahardcoregame">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.ultrahardcoregame">
+    <patternset refid="excluded.from.module.ultrahardcoregame"/>
+  </patternset>
+  
+  <path id="ultrahardcoregame.module.sourcepath">
+    <dirset dir="${module.ultrahardcoregame.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="ultrahardcoregame.module.test.sourcepath">
+    <dirset dir="${module.ultrahardcoregame.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.ultrahardcoregame" depends="compile.module.ultrahardcoregame.production,compile.module.ultrahardcoregame.tests" description="Compile module UltraHardCoreGame"/>
+  
+  <target name="compile.module.ultrahardcoregame.production" depends="register.custom.compilers" description="Compile module UltraHardCoreGame; production classes">
+    <mkdir dir="${ultrahardcoregame.output.dir}"/>
+    <javac2 destdir="${ultrahardcoregame.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ultrahardcoregame}/javac">
+      <compilerarg line="${compiler.args.ultrahardcoregame}"/>
+      <bootclasspath refid="ultrahardcoregame.module.bootclasspath"/>
+      <classpath refid="ultrahardcoregame.module.production.classpath"/>
+      <src refid="ultrahardcoregame.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ultrahardcoregame"/>
+    </javac2>
+    
+    <copy todir="${ultrahardcoregame.output.dir}">
+      <fileset dir="${module.ultrahardcoregame.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.ultrahardcoregame.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.ultrahardcoregame.tests" depends="register.custom.compilers,compile.module.ultrahardcoregame.production" description="compile module UltraHardCoreGame; test classes" unless="skip.tests">
+    <mkdir dir="${ultrahardcoregame.testoutput.dir}"/>
+    <javac2 destdir="${ultrahardcoregame.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ultrahardcoregame}/javac">
+      <compilerarg line="${compiler.args.ultrahardcoregame}"/>
+      <bootclasspath refid="ultrahardcoregame.module.bootclasspath"/>
+      <classpath refid="ultrahardcoregame.module.classpath"/>
+      <src refid="ultrahardcoregame.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ultrahardcoregame"/>
+    </javac2>
+    
+    <copy todir="${ultrahardcoregame.testoutput.dir}">
+      <fileset dir="${module.ultrahardcoregame.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.ultrahardcoregame" description="cleanup module">
+    <delete dir="${ultrahardcoregame.output.dir}"/>
+    <delete dir="${ultrahardcoregame.testoutput.dir}"/>
+  </target>
+</project>

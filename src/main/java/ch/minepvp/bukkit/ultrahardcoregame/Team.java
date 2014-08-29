@@ -30,4 +30,10 @@ public class Team {
 
         return names;
     }
+
+    public void sendMessage(String message) {
+        for ( Player player : members ) {
+            player.sendMessage(message);
+        }
+    }
 }
